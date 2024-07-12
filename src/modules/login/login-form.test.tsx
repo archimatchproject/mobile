@@ -1,15 +1,15 @@
 import React from 'react';
 
 import { cleanup, fireEvent, render, screen, waitFor } from '@/core/test-utils';
+import type { LoginFormProps } from '@/types'; // Updated import path
 
-import type { LoginFormProps } from './login-form';
 import { LoginForm } from './login-form';
 
 afterEach(cleanup);
 
 const onSubmitMock: jest.Mock<LoginFormProps['onSubmit']> = jest.fn();
 
-describe('LoginForm Form ', () => {
+describe('LoginForm Form', () => {
   it('renders correctly', async () => {
     render(<LoginForm onSubmit={onSubmitMock} />);
     expect(await screen.findByText(/Sign in/i)).toBeOnTheScreen();
@@ -47,7 +47,7 @@ describe('LoginForm Form ', () => {
     const emailInput = screen.getByTestId('email-input');
     const passwordInput = screen.getByTestId('password-input');
 
-    fireEvent.changeText(emailInput, 'youssef@gmail.com');
+    fireEvent.changeText(emailInput, 'example@gmail.com'); // Corrected email to match expected value
     fireEvent.changeText(passwordInput, 'password');
     fireEvent.press(button);
     await waitFor(() => {
@@ -56,7 +56,7 @@ describe('LoginForm Form ', () => {
     // undefined because we don't use second argument of the  SubmitHandler
     expect(onSubmitMock).toHaveBeenCalledWith(
       {
-        email: 'example@gmail.com',
+        email: 'example@gmail.com', // Corrected expected value to match input
         password: 'password',
       },
       undefined

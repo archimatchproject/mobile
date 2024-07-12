@@ -2,20 +2,15 @@ import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { View } from 'react-native';
-import type * as z from 'zod';
 
 import { translate, useAuth } from '@/core';
 import { Checkbox, ControlledInput, Text } from '@/shared/components';
 import useCustomForm from '@/shared/hooks/use-custom-form';
+import type { LoginFormProps, LoginFormType } from '@/types'; // Updated import
 import { LoginFormSchema } from '@/validations';
 
 import { Container } from '../shared';
 import LoginButton from '../shared/login-button';
-
-export type LoginFormType = z.infer<typeof LoginFormSchema>;
-export type LoginFormProps = {
-  onSubmit: SubmitHandler<LoginFormType>;
-};
 
 export const LoginForm = ({ onSubmit }: LoginFormProps) => {
   const { handleSubmit, control } = useCustomForm(LoginFormSchema);
@@ -30,7 +25,7 @@ export const LoginForm = ({ onSubmit }: LoginFormProps) => {
   };
 
   return (
-    <View className="flex w-full justify-center ">
+    <View className="flex w-full justify-center">
       <ControlledInput
         testID="email-input"
         control={control}
@@ -46,14 +41,14 @@ export const LoginForm = ({ onSubmit }: LoginFormProps) => {
         placeholder={translate('login.mdp')}
         secureTextEntry={true}
       />
-      <Container style="flex-row justify-between my-3 ">
+      <Container style="flex-row justify-between my-3">
         <Checkbox
           checked={checked}
           onChange={setChecked}
           accessibilityLabel="Se souvenir de moi"
           label={translate('login.souvenir')}
         />
-        <Text className="font-lato text-xs font-semibold text-primary ">
+        <Text className="font-lato text-xs font-semibold text-primary">
           {translate('login.mdpOublier')}
         </Text>
       </Container>
