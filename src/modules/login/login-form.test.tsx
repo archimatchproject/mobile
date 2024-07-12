@@ -42,21 +42,21 @@ describe('LoginForm Form', () => {
 
   it('Should call LoginForm with correct values when values are valid', async () => {
     render(<LoginForm onSubmit={onSubmitMock} />);
-
+    const eMail = 'example@gmail.com';
     const button = screen.getByTestId('login-button');
     const emailInput = screen.getByTestId('email-input');
     const passwordInput = screen.getByTestId('password-input');
 
-    fireEvent.changeText(emailInput, 'example@gmail.com'); // Corrected email to match expected value
+    fireEvent.changeText(emailInput, eMail); // Corrected email to match expected value
     fireEvent.changeText(passwordInput, 'password');
     fireEvent.press(button);
     await waitFor(() => {
       expect(onSubmitMock).toHaveBeenCalledTimes(1);
     });
-    // undefined because we don't use second argument of the  SubmitHandler
+
     expect(onSubmitMock).toHaveBeenCalledWith(
       {
-        email: 'example@gmail.com', // Corrected expected value to match input
+        email: eMail,
         password: 'password',
       },
       undefined
