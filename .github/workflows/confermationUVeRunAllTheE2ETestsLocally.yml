@@ -1,0 +1,31 @@
+name: Confirm E2E Tests
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  check-e2e-test-confirmation:
+    runs-on: ubuntu-latest
+    if: github.event.issue.pull_request != null  # Ensure this runs only on PR comments
+    steps:
+      - name: Check for E2E Test Confirmation
+        id: check-comment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const comment = github.event.comment.body;
+            const confirmationText = "I have run all E2E tests locally and they passed.";
+            if (comment.trim().toLowerCase() === confirmationText.toLowerCase()) {
+              return { confirmed: true };
+            } else {
+              return { confirmed: false };
+            }
+
+      - name: Mark as successful if confirmed
+        if: steps.check-comment.outputs.confirmed == 'true'
+        run: echo "E2E tests confirmed as passed by the contributor."
+
+      - name: Fail if not confirmed
+        if: steps.check-comment.outputs.confirmed != 'true'
+        run: exit 1
